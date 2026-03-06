@@ -22,10 +22,11 @@ const supabase = require('./config/db');
 
 // --- 3. Import route modules ---
 const authRoutes = require('./routes/authRoutes');
-// Future routes will be imported here, e.g.:
-// const orderRoutes   = require('./routes/orderRoutes');
-// const productRoutes = require('./routes/productRoutes');
-// const shopRoutes    = require('./routes/shopRoutes');
+const productRoutes = require('./routes/productRoutes');
+const shopRoutes = require('./routes/shopRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const userRoutes = require('./routes/userRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 // --- 4. Initialize Express app ---
 const app = express();
@@ -65,10 +66,11 @@ app.get('/', (req, res) => {
 
 // --- 8. Mount API Routes ---
 app.use('/api/auth', authRoutes);
-// Future routes:
-// app.use('/api/orders',   orderRoutes);
-// app.use('/api/products', productRoutes);
-// app.use('/api/shops',    shopRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/shops', shopRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // --- 9. 404 Handler (must be after all valid routes) ---
 app.use((req, res) => {
