@@ -34,29 +34,77 @@ A Supabase connection test runs automatically on startup.
 dms-backend/
 ├── src/
 │   ├── config/
-│   │   └── db.js              # Supabase client singleton
+│   │   └── db.js                  # Supabase client singleton
 │   ├── controllers/
-│   │   └── authController.js  # Login & register logic
+│   │   ├── authController.js      # Login & register logic
+│   │   ├── productController.js   # Product CRUD operations
+│   │   ├── orderController.js     # Order CRUD + status updates
+│   │   ├── shopController.js      # Shop CRUD operations
+│   │   ├── userController.js      # User listing (admin)
+│   │   └── dashboardController.js # System statistics
 │   ├── middlewares/
-│   │   ├── verifyToken.js     # JWT authentication guard
-│   │   └── authorizeRoles.js  # RBAC role guard
+│   │   ├── verifyToken.js         # JWT authentication guard
+│   │   └── authorizeRoles.js      # RBAC role guard
 │   ├── models/
-│   │   └── userModel.js       # Supabase DB queries for users
+│   │   ├── userModel.js           # DB queries for users
+│   │   ├── productModel.js        # DB queries for products
+│   │   ├── orderModel.js          # DB queries for orders
+│   │   └── shopModel.js           # DB queries for shops
 │   ├── routes/
-│   │   └── authRoutes.js      # /api/auth route definitions
-│   └── index.js               # Entry point
-├── .env.example               # Environment variable template
+│   │   ├── authRoutes.js          # /api/auth
+│   │   ├── productRoutes.js       # /api/products
+│   │   ├── orderRoutes.js         # /api/orders
+│   │   ├── shopRoutes.js          # /api/shops
+│   │   ├── userRoutes.js          # /api/users
+│   │   └── dashboardRoutes.js     # /api/dashboard
+│   └── index.js                   # Entry point
+├── .env.example                   # Environment variable template
 ├── .gitignore
 └── package.json
 ```
 
 ## API Endpoints
 
+### Auth
 | Method | Route | Access | Description |
 |--------|-------|--------|-------------|
 | GET | `/` | Public | Health check |
 | POST | `/api/auth/login` | Public | Login, returns JWT |
 | POST | `/api/auth/register` | Admin only | Register a new sales rep |
+
+### Products
+| Method | Route | Access | Description |
+|--------|-------|--------|-------------|
+| GET | `/api/products` | Authenticated | List all products |
+| GET | `/api/products/:id` | Authenticated | Get single product |
+| POST | `/api/products` | Admin | Add product |
+| PUT | `/api/products/:id` | Admin | Update product |
+| DELETE | `/api/products/:id` | Admin | Delete product |
+
+### Orders
+| Method | Route | Access | Description |
+|--------|-------|--------|-------------|
+| GET | `/api/orders` | Authenticated | List all orders |
+| GET | `/api/orders/:id` | Authenticated | Get single order |
+| POST | `/api/orders` | Authenticated | Create order |
+| PATCH | `/api/orders/:id` | Admin | Update order status |
+| DELETE | `/api/orders/:id` | Admin | Delete order |
+
+### Shops
+| Method | Route | Access | Description |
+|--------|-------|--------|-------------|
+| GET | `/api/shops` | Authenticated | List all shops |
+| GET | `/api/shops/:id` | Authenticated | Get single shop |
+| POST | `/api/shops` | Admin | Add shop |
+| PUT | `/api/shops/:id` | Admin | Update shop |
+| DELETE | `/api/shops/:id` | Admin | Delete shop |
+
+### Users & Dashboard
+| Method | Route | Access | Description |
+|--------|-------|--------|-------------|
+| GET | `/api/users` | Admin | List all users |
+| GET | `/api/users/:id` | Admin | Get single user |
+| GET | `/api/dashboard/stats` | Admin | System statistics |
 
 ## Security
 - Passwords hashed with **bcrypt** (never stored in plain text)
